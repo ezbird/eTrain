@@ -1,0 +1,7 @@
+Startup Times:
+____________________
+
+21323 ms, off on show
+15121 ms, off on show
+
+1341 ms, off off show

@@ -1,0 +1,67 @@
+#JSGF V1.0;
+
+/**
+ * Available Voice Commands for eTrain
+ *
+ * A voice command contains exactly 3 parts
+ *
+ * After editing this file, you must restart the program to utilize updates
+ */
+
+grammar hello;
+public <greet> = 
+
+// -----   Part 1
+
+(computer | begin | play | transfer | close | open) 
+
+
+// -----   Part 2
+
+// Artists
+
+( we is her   		| pink floyd      | three eleven   | radio head     | classical   |
+  mass e star 		| the picks ease  | bob marley     | ah ma lee      | the go team | 
+  the chemical brothers | the beatles 	  | daft punk 	   | show pan       | the books   | 
+  the gorillas 		| the hives 	  | seed 	   | stereo lab     | opera       | 
+  flaming lips 		| gershwin 	  | fifth element  | billie holiday | bah boo     | 
+  air 			| rat at at 	  | joy electric   | the shin 	    | care eh boo | 
+  talk a mas a 		| em us mine 	  | mute math 	   | scott joplin   | em em and double you | 
+  two skinny jays 	| frank 	  | aim on toe bin | more chi bah   | rage against the machine | 
+  the picks ease 	| the philadelphia experiment 	   | bone a bo 	    | bass nectar | 
+  beck 			| port is head    | propeller heads | joy electric  | see cool rose | 
+  out cast 		| propeller heads | white stripes  | soul coughing  | james pea | 
+  prime us 		| crystal castles | bob dylan 	   | no doubt 	    | bill evans | neon indian | 
+  the fraud tell ease   | the tribe 	  | be york 	   | the lone e us  | over the rhine | 
+  audio slave		| the black keys  | the black eyed peas | the animal collective |
+  bay toe vin		| cold play	   | dig able planets | sub lime | andrew bird |
+
+
+// Albums
+
+  the album Abbey Road  | the album Morning View    | the album dark side of the moon | 
+  the album grass roots | the album music 	    | the album volume eyes her       | 
+  the album sound system | the album evolve her	    | the album merry weather         | 
+  the album tran sister | the album kid a 	    | the album unity 		   |
+  the album ant eye pop | the album oh kay computer | the album kid a              | 
+  the album hello nasty | the album make yourself   | the album check your head    | 
+  the album search and pepper | 
+
+
+// Playlists
+
+favorites | sleep | morning
+
+
+// General Commands
+
+| current | To | That | Stop | Transfer File | Initiate | Over Ride | Three Tracks | Seven Tracks | Random Music | Delete File From | Delete All Move Oh | Next Track | Same Track | Expand | Random | Open | Channel | twenty songs | fifty songs | play | he may uhl | d v d | collage)
+
+
+// -----    Part 3
+
+( Video | Mode | Channel | Goo gull | tree | Files | Program | Shut Down | Please | Movie | Library | play list | Volume | Random | 
+  Track One | Track Two | Track Three | Track Four | Track Five | Track Six | Track Seven | Track Eight | Track Nine | Track Ten | 
+  Track Eleven | Track Twelve | Track Thirteen | Track Fourteen | Track Fifteen | Track Sixteen | Track Seventeen | Track Eighteen | Track Nineteen | Track Twenty);
+
+

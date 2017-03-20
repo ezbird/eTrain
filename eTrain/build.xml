@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ********************************************************** -->
+<!-- *                                                        * -->
+<!-- * Apache Ant build file used to build the Sphinx-4 demos.* -->
+<!-- * To build the demos, just type the following:           * -->
+<!-- *                                                        * -->
+<!-- *     ant -buildfile demo.xml                            * -->
+<!-- *                                                        * -->
+<!-- * For more information:  http://ant.apache.org/          * -->
+<!-- *                                                        * -->
+<!-- ********************************************************** -->
+
+<project basedir="." default="all" name="Sphinx-4">
+
+    <!-- ********************************************************** -->
+    <!-- *                                                        * -->
+    <!-- * Where to find things...                                * -->
+    <!-- *                                                        * -->
+    <!-- ********************************************************** -->
+    <property name="src_dir"		value="src"/>
+    <property name="build_dir"		value="bld"/>
+    <property name="classes_dir"	value="${build_dir}/classes"/>
+    <property name="lib_dir"        	value="lib"/>
+    <property name="bin_dir"        	value="bin"/>
+
+    
+    <!-- this is used to set the classpath, very smooth-->
+    <path id="libs">
+	<pathelement path="${lib_dir}"/>
+	<fileset dir="lib">
+           <include name="**/*.jar"/>
+        </fileset>
+	
+	<!--
+	<pathelement location="${lib_dir}/sphinx4.jar"/>
+	<pathelement location="${lib_dir}/basicplayer3.0.jar"/>
+	<pathelement location="${lib_dir}/ftpbean.jar"/>
+	-->
+	
+    </path>
+
+
+
+    <!-- ********************************************************** -->
+    <!-- *                                                        * -->
+    <!-- * Checks for the presence of jsapi.jar.                  * -->
+    <!-- *                                                        * -->
+    <!-- ********************************************************** -->
+    <target name="check_jsapi_jar.isPresent">
+        <available file="lib/jsapi.jar" property="jsapi_jar.isPresent"/>
+    </target>
+
+    <target name="issue_jsapi_warning"
+            unless="jsapi_jar.isPresent">
+        <echo>
+Cannot find lib/jsapi.jar.  Will not build!  
+See docs/jsapi_setup.html for information on setting up 
+your environment to use JSAPI.
+        </echo>
+    </target>
+
+
+
+    <!-- ********************************************************** -->
+    <!-- *                                                        * -->
+    <!-- * Builds Sweetdream.jar                                  * -->
+    <!-- *                                                        * -->
+    <!-- ********************************************************** -->
+    <target name="all"
+	    depends="make_lib_dir,
+	             check_jsapi_jar.isPresent,
+                     issue_jsapi_warning,
+	             compile_sphinx_sweetdream"
+	    description="Compiles Sweetdream.jar"/>
+
+    <target name="make_lib_dir">
+	<mkdir dir="${lib_dir}"/>
+    </target>
+
+
+<target name="compile_sphinx_sweetdream">
+         <mkdir dir="${classes_dir}/sweetdream"/>
+     <javac debug="true"
+            source="7"
+            listfiles="true"
+            deprecation="true"
+            srcdir="${src_dir}"
+            destdir="${classes_dir}"
+            includes="**">
+         <classpath refid="libs"/>
+     </javac>
+
+     <!--Must be here for sphinx4 to work-->
+        <copy file="${src_dir}/Sweetdream.config.xml"
+           todir="${classes_dir}/sweetdream"/>
+
+	<copy file="commands.gram"
+	      todir="${classes_dir}/sweetdream"/>
+	      
+	<mkdir dir="${classes_dir}/sweetdream/src"/>
+
+      <!-- Copy all source files into the jar -->
+	<copy todir="${classes_dir}/sweetdream/src">
+         <fileset dir="${src_dir}">
+            <include name="**"/>
+         </fileset>
+        </copy>
+        
+              <!-- Copy all source files into the jar -->
+	<copy todir="${classes_dir}/sweetdream/javazoom">
+         <fileset dir="javazoom">
+            <include name="**"/>
+         </fileset>
+        </copy>
+
+	<mkdir dir="${classes_dir}/sweetdream/images"/>
+	<copy todir="${classes_dir}/sweetdream/images">
+         <fileset dir="images">
+            <include name="**"/>
+	    <exclude name="**/artists/**" />
+	    <exclude name="**/playlists/**" />
+	    <exclude name="**/collage/**" />
+	    <exclude name="**/covers/**" />
+         </fileset>
+        </copy>
+	<mkdir dir="${classes_dir}/sweetdream/images/artists"/>
+	
+	<mkdir dir="${classes_dir}/sweetdream/sounds"/>
+	<copy todir="${classes_dir}/sweetdream/sounds">
+         <fileset dir="sounds">
+            <include name="**"/>
+         </fileset>
+        </copy>
+
+     <mkdir dir="${bin_dir}"/>
+
+
+<!-- Add all the jar files in lib folder to the class path -->
+<path id="build.classpath">
+<fileset dir="${basedir}/">
+  <include name="lib/*.jar"/>
+</fileset>
+</path>
+
+
+<!-- all this stuff helps the class path in the manifest file be relative -->
+<pathconvert property="manifest.classpath" pathsep=" ">
+<path refid="build.classpath"/>
+<mapper>
+<chainedmapper>
+<flattenmapper/>
+<globmapper from="*.jar" to="../lib/*.jar"/>
+</chainedmapper>
+</mapper>
+</pathconvert>
+
+<property name="version.num" value="1.409"/>
+<buildnumber file="build.num"/>
+   <tstamp>
+     <format property="TODAY" pattern="yyyy-MM-dd HH:mm:ss" />
+   </tstamp>
+
+        
+<!-- Create jar file -->
+<jar jarfile="${bin_dir}/etrain.jar">
+<fileset dir="${classes_dir}" includes="**"/>
+<manifest>
+<attribute name="Main-Class" value="sweetdream.Sweetdream"/>
+<attribute name="Class-Path" value="${manifest.classpath}"/>
+<attribute name="Implementation-Version" 
+            value="${version.num}-b${build.number}"/>
+<attribute name="Built-Date" value="${TODAY}"/> 
+</manifest>
+</jar>
+
+   
+ </target> 
+
+    <target name="init">
+        <available property="keystore.exists" file="tempKeystore"/>
+        <tstamp/>
+    </target>
+
+    <target name="keystore" unless="keystore.exists">
+        <genkey alias="unknown" storepass="public" keystore="tempKeystore"
+            dname="CN=Anonymous Signature, OU=unknown, o=unknown, c=unknown" />
+    </target>
+
+
+
+</project>
